@@ -1,21 +1,30 @@
 * {
    margin: 0%;
    
+   
 }
 
 #header {
-    background-image: linear-gradient(to right, rgb(67, 67, 255), rgb(0, 0, 204));
+    background-image: linear-gradient(to right, rgb(57, 156, 255), rgb(0, 14, 204));
     padding-bottom: 10px;
     padding-top: 10px;
     margin-bottom: 10px;
     display: flex;
     justify-content: center;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    text-decoration: underline;
     
 }
 
-#citySearch {
+/* .citySearch {
     display: flex;
     flex-direction: column;
     width: 20%;
     padding: 3px;
+} */
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
 }
