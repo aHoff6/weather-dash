@@ -8,44 +8,33 @@ function render() {
   console.log(searchedCity);
 
   function getApi() {
-    let baseUrl = `https://api.openweathermap.org/data/2.5/weather?q=${searchedCity}&appid=${apiKey}&units=imperial`;
+    const baseUrl = `https://api.openweathermap.org/data/2.5/weather?q=${searchedCity}&appid=${apiKey}&units=imperial`;
     fetch(baseUrl)
       .then(function (response) {
         return response.json();
       })
       .then(function (data) {
-        console.log(data);
+        // console.log(data);
         $("#display").empty();
         let weatherData = data;
-
         let container = $("#display");
-
         let containerEl = $("<div>").appendTo(container);
 
-        let containerDisplay = $("displayel")
-        .appendTo(containerEl);
-
-        let dayOf = $("<h4>")
-          .text(todaysDate)
-          .appendTo(containerEl);
-
-        let expCity = $("<p>")
+        $("displayel").appendTo(containerEl);
+        $("<h4>").text(todaysDate).appendTo(containerEl);
+        $("<p>")
           .text("Weather for: " + searchedCity)
           .appendTo(containerEl);
-
-        let degree = $("<p>")
+        $("<p>")
           .text(Math.round(weatherData.main.temp) + "˚F")
           .appendTo(containerEl);
-
-        let humid = $("<p>")
+        $("<p>")
           .text("Humidity: " + weatherData.main.humidity + "%")
           .appendTo(containerEl);
-
-        let wind = $("<p>")
+        $("<p>")
           .text("Wind Speed: " + Math.round(weatherData.wind.speed) + " mph")
           .appendTo(containerEl);
-
-        let icon = $("<img>")
+        $("<img>")
           .addClass("rounded mx-auto d-block")
           .attr(
             "src",
@@ -54,30 +43,71 @@ function render() {
               "@2x.png"
           )
           .appendTo(containerEl);
-
-        let iconMain = $("<p>")
-          .text(weatherData.weather[0].main)
-    
-          .appendTo(containerEl);
-
+        $("<p>").text(weatherData.weather[0].main).appendTo(containerEl);
         $("#displayel").append(container);
       });
   }
 
+  function fiveDayForecast() {
+    const urlForecast = `https://api.openweathermap.org/data/2.5/forecast?q=${searchedCity}&appid=${apiKey}&units=imperial`;
+
+    fetch(urlForecast)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        console.log(data);
+        $("#displayFiveDayEl").empty();
+        let daysArray = data.list.filter(function (day, index) {
+          // console.log(index);
+          // getting the data.list array and dividing it by 8 to get each of the 5 days to display
+          return index % 8 === 0;
+        });
+        daysArray.forEach(function (day) {
+          //   console.log(day);
+          let fiveDivCard = $("<div>").addClass("col-sm-2 fiveCard");
+          $("<h4>").text(day.dt_txt.slice(0, 10)).appendTo(fiveDivCard);
+          $("<p>")
+            .text(Math.round(day.main.temp) + "˚F")
+            .appendTo(fiveDivCard);
+          $("<p>")
+            .text("Humidity: " + day.main.humidity + "%")
+            .appendTo(fiveDivCard);
+          $("<p>").text("wind Speed: " + Math.round(day.wind.speed) + " mph");
+          $("<img>")
+            .attr(
+              "src",
+              "http://openweathermap.org/img/wn/" +
+                day.weather[0].icon +
+                "@2x.png"
+            )
+            .appendTo(fiveDivCard);
+          $(fiveDivCard).appendTo("#displayFiveDayEl");
+        });
+      });
+  }
+
+// TODO code for search history display and click function
+  
+
+
   $("#submitBtn").on("click", function (e) {
-    e.preventDefault();
-    searchedCity = $("#input").val().trim();
-    if (!cityList.includes(searchedCity)) {
-      cityList.push(searchedCity);
-    }
-    if (cityList.length > 5) {
-      cityList.shift();
-    }
-
-    localStorage.setItem("cities", JSON.stringify(cityList));
-
-    console.log(cityList);
-    getApi();
-  });
+      e.preventDefault();
+      searchedCity = $("#input").val().trim();
+      if (!cityList.includes(searchedCity)) {
+          cityList.push(searchedCity);
+        }
+        if (cityList.length > 5) {
+            cityList.shift();
+        }
+        
+        localStorage.setItem("cities", JSON.stringify(cityList));
+        
+        console.log(cityList);
+        getApi();
+        fiveDayForecast();
+        
+        // $("#input").val("");
+    });
 }
 $(document).ready(render);

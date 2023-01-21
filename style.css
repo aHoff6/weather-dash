@@ -18,12 +18,19 @@
     
 }
 
-/* .citySearch {
-    display: flex;
-    flex-direction: column;
-    width: 20%;
-    padding: 3px;
-} */
+.fiveCard {
+    background-color: rgba(58, 108, 255, 0.825);
+    margin: 10px;
+}
+
+.searchHis {
+    width: auto;
+    cursor: pointer;
+    padding: 5px;
+    text-align: center;
+    display: block;
+
+}
 
 .row {
     display: flex;
