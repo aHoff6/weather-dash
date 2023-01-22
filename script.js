@@ -59,10 +59,11 @@ function render() {
         console.log(data);
         $("#displayFiveDayEl").empty();
         let daysArray = data.list.filter(function (day, index) {
-          // console.log(index);
-          // getting the data.list array and dividing it by 8 to get each of the 5 days to display
-          return index % 8 === 0;
+            console.log(index);
+            // getting the data.list array and dividing it by 8 to get each of the 5 days to display
+            return index % 8 === 0;
         });
+        console.log(daysArray);
         daysArray.forEach(function (day) {
           //   console.log(day);
           let fiveDivCard = $("<div>").addClass("col-sm-2 fiveCard");
@@ -83,13 +84,29 @@ function render() {
             )
             .appendTo(fiveDivCard);
           $(fiveDivCard).appendTo("#displayFiveDayEl");
+         
         });
       });
   }
 
-// TODO code for search history display and click function
   
-
+function searchHistory() {
+    $("#searchHistory").empty();
+    cityList.forEach(function(city) {
+    let displayHis = $("<div class='searchHis'>")
+    .attr("data", city)
+    .text(city);
+    $("#searchHistory").append(displayHis);
+ 
+    });
+    }
+  
+  $(document).on("click", ".searchHis", function() {
+    let = searchedCity = $(this).text();
+    $(this).click(getApi);
+    getApi();
+    fiveDayForecast();
+});
 
   $("#submitBtn").on("click", function (e) {
       e.preventDefault();
@@ -106,8 +123,8 @@ function render() {
         console.log(cityList);
         getApi();
         fiveDayForecast();
+        searchHistory();
         
-        // $("#input").val("");
     });
 }
 $(document).ready(render);
