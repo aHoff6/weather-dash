@@ -20,6 +20,8 @@ function render() {
         let container = $("#display");
         let containerEl = $("<div>").appendTo(container);
 
+        console.log(weatherData.weather[0].main)
+
         $("displayel").appendTo(containerEl);
         $("<h4>").text(todaysDate).appendTo(containerEl);
         $("<p>")
@@ -100,6 +102,21 @@ function searchHistory() {
  
     });
     }
+
+    function loadDefaultWeather() {
+      const defaultCity = "Jersey City"; 
+  
+      searchedCity = defaultCity;
+      getApi();
+      fiveDayForecast();
+    }
+  
+    // Load default weather data
+    $(document).ready(function () {
+      loadDefaultWeather();
+      searchHistory();
+    });
+  
   
   $(document).on("click", ".searchHis", function() {
     let = searchedCity = $(this).text();
