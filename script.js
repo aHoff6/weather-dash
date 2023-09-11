@@ -7,21 +7,54 @@ function render() {
   let searchedCity = "";
   console.log(searchedCity);
 
+  function getBackgroundImage(weatherCondition) {
+    
+    const conditionToImage = {
+      "Clear": "clear1.png",
+      "Clouds": "clouds2.png",
+      "Rain": "rain2.png",
+      "Snow": "",
+      "Thunderstorm": "thunderstorm1.png"
+    };
+
+    // Default image
+    const defaultImage = "default-image.jpg";
+
+    // Check if the condition exists in the mapping, if not, use the default image
+    return conditionToImage[weatherCondition] || defaultImage;
+  }
+
+  function setWeatherBackground(weatherCondition) {
+    // Get the background image file name based on the weather condition
+    const backgroundImage = getBackgroundImage(weatherCondition);
+
+    // Set the background image in the CSS
+    $('#backgroundimage').css('background-image', `url('./pics/${backgroundImage}')`);
+  }
+
   function getApi() {
     const baseUrl = `https://api.openweathermap.org/data/2.5/weather?q=${searchedCity}&appid=${apiKey}&units=imperial`;
+  
     fetch(baseUrl)
       .then(function (response) {
         return response.json();
       })
       .then(function (data) {
-        // console.log(data);
+        // Check if the response has valid data
+        if (data && data.weather && data.weather[0] && data.weather[0].main) {
+          const weatherCondition = data.weather[0].main;
+  
+          // Set the background image based on the weather condition
+          setWeatherBackground(weatherCondition);
+        }
+  
         $("#display").empty();
         let weatherData = data;
         let container = $("#display");
         let containerEl = $("<div>").appendTo(container);
-
-        console.log(weatherData.weather[0].main)
-
+  
+        console.log(weatherData.weather[0].main);
+  
         $("displayel").appendTo(containerEl);
         $("<h4>").text(todaysDate).appendTo(containerEl);
         $("<p>")
@@ -47,8 +80,12 @@ function render() {
           .appendTo(containerEl);
         $("<p>").text(weatherData.weather[0].main).appendTo(containerEl);
         $("#displayel").append(container);
+      })
+      .catch(function (error) {
+        console.error("Error fetching weather data:", error);
       });
   }
+  
 
   function fiveDayForecast() {
     const urlForecast = `https://api.openweathermap.org/data/2.5/forecast?q=${searchedCity}&appid=${apiKey}&units=imperial`;

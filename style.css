@@ -5,6 +5,14 @@
    
 }
 
+.back {
+background-color: rgb(26, 21, 21);
+}
+
+.title {
+    color: whitesmoke;
+}
+
 #header {
     background-image: linear-gradient(to right, rgb(57, 156, 255), rgb(0, 14, 204));
     padding-bottom: 10px;
@@ -12,7 +20,7 @@
     margin-bottom: 10px;
     display: flex;
     justify-content: center;
-    color: rgb(0, 0, 0);
+    color: whitesmoke;
     font-weight: bold;
     text-decoration: underline;
     
@@ -20,7 +28,8 @@
 
 .fiveCard {
     background-color: rgba(58, 108, 255, 0.825);
-    margin: 10px;
+    margin: 20px;
+    border-radius: 5%;
 }
 
 .searchHis {
@@ -35,4 +44,10 @@
 .row {
     display: flex;
     flex-wrap: wrap;
+}
+
+#backgroundimage {
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 20px;
 }
